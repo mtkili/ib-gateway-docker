@@ -3,7 +3,7 @@ FROM python:3.7-slim
 # install dependencies
 RUN  apt-get update \
   && apt-get upgrade -y \
-  && apt-get install -y wget unzip xvfb libxtst6 libxrender1 python3.7-dev build-essential net-tools x11-utils socat
+  && apt-get install -y wget unzip xvfb libxtst6 libxrender1 python3.7-dev build-essential net-tools x11-utils x11vnc socat
 
 # set environment variables
 ENV TWS_INSTALL_LOG=/root/Jts/tws_install.log \
@@ -36,6 +36,9 @@ RUN rm /tmp/ibgw.sh /tmp/IBC.zip
 # copy IBC/Jts configs
 COPY ibc/config.ini ${ibcIni}
 COPY ibc/jts.ini ${twsPath}/jts.ini
+
+RUN mkdir .vnc
+RUN x11vnc -storepasswd 1358 .vnc/passwd
 
 # copy cmd script
 WORKDIR /root
