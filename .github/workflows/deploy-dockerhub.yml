@@ -1,26 +1,26 @@
-name: Deploy to docker hub
+# name: Deploy to docker hub
 
-on:
-   push:
-     branches:
-        - '*' 
-        - '!feature/**' 
-        - '!hotfix/**'
-        - '!bugfix/**' 
-     tags:
-       - 'v*'
+# on:
+#    push:
+#      branches:
+#         - '*' 
+#         - '!feature/**' 
+#         - '!hotfix/**'
+#         - '!bugfix/**' 
+#      tags:
+#        - 'v*'
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
     
-    steps:
-      - uses: actions/checkout@master
-      - name: build-push
-        uses: docker/build-push-action@v1
-        with:
-            username: ${{ secrets.DOCKERHUB_USERNAME }}
-            password: ${{ secrets.DOCKERHUB_PASSWORD }}
-            repository: manhinhang/ib-gateway-docker
-            tag_with_ref: true
+#     steps:
+#       - uses: actions/checkout@master
+#       - name: build-push
+#         uses: docker/build-push-action@v1
+#         with:
+#             username: ${{ secrets.DOCKERHUB_USERNAME }}
+#             password: ${{ secrets.DOCKERHUB_PASSWORD }}
+#             repository: manhinhang/ib-gateway-docker
+#             tag_with_ref: true
  
