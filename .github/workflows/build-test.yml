@@ -23,28 +23,10 @@ jobs:
         if [ -f requirements-test.txt ]; then pip install -r requirements-test.txt; fi
     - name: Build Docker image
       run: docker build -t $IMAGE_NAME .
-    - name: Smoke tests container image
-      run: pytest -x
-      env:
-        IB_ACCOUNT: ${{ secrets.IB_ACCOUNT }}
-        IB_PASSWORD: ${{ secrets.IB_PASSWORD }}
-        TRADE_MODE: paper
-
-    - name: Run ib_insync example
-      run: |
-        docker run --rm \
-        -e IB_ACCOUNT=$IB_ACCOUNT \
-        -e IB_PASSWORD=$IB_PASSWORD \
-        -e TRADE_MODE=paper \
-        -p 4001:4002 \
-        -d \
-        $IMAGE_NAME tail -f /dev/null;
-        sleep 30;
-        pip install ib_insync pandas;
-        python examples/ib_insync/scripts/connect_gateway.py;
-        docker stop $(docker ps -a -q)
-      env:
-        TRADE_MODE: paper
-        IB_ACCOUNT: ${{ secrets.IB_ACCOUNT }}
-        IB_PASSWORD: ${{ secrets.IB_PASSWORD }}
-  
+    - name: Push to ECR
+      uses: jwalton/gh-ecr-push@v1
+      with:
+        access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        region: eu-west-1
+        image: $IMAGE_NAME
