@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+set -o errexit
 
 echo "Starting Xvfb..."
 rm -f /tmp/.X0-lock
@@ -12,6 +13,10 @@ while ! xdpyinfo -display "$DISPLAY"; do
 done
 
 echo "Xvfb is ready"
+
+mkdir .vnc
+x11vnc -storepasswd blackbird .vnc/passwd
+x11vnc -rfbport $VNC_PORT -display :0 -usepw -forever &
 echo "Setup port forwarding..."
 
 socat TCP-LISTEN:$IBGW_PORT,fork TCP:localhost:4001,forever &
