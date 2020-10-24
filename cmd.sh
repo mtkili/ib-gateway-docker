@@ -19,7 +19,7 @@ x11vnc -storepasswd blackbird .vnc/passwd
 x11vnc -rfbport $VNC_PORT -display :0 -usepw -forever &
 echo "Setup port forwarding..."
 
-socat TCP-LISTEN:$IBGW_PORT,fork TCP:localhost:4001,forever &
+socat TCP-LISTEN:$IBGW_PORT,fork TCP:localhost:4002,forever &
 echo "*****************************"
 
 python /root/bootstrap.py
